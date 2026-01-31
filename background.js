@@ -46,7 +46,6 @@ chrome.commands.onCommand.addListener((command) => {
 // Download media files (supports stories, reels, posts)
 async function downloadMedia(urls, baseFilename = 'instagram', asZip = false, quality = 'high') {
     if (!urls || urls.length === 0) {
-        console.log('[Instagram Downloader] No URLs to download');
         return;
     }
 
