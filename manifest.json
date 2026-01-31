@@ -27,17 +27,29 @@
             "48": "icons/icon48.png",
             "128": "icons/icon128.png"
         },
-        "default_title": "Instagram Downloader"
+        "default_title": "Instagram Downloader - Photos, Videos & Stories"
     },
     "content_scripts": [
         {
             "matches": [
-                "https://www.instagram.com/*"
+                "https://www.instagram.com/*",
+                "https://instagram.com/*"
             ],
             "js": [
                 "contentScript.js"
             ],
-            "all_frames": true
+            "all_frames": true,
+            "run_at": "document_start"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "jszip.min.js"
+            ],
+            "matches": [
+                "https://www.instagram.com/*"
+            ]
         }
     ],
     "commands": {
