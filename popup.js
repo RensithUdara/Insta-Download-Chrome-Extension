@@ -282,7 +282,17 @@ function saveSettings() {
 
 // Load Settings
 function loadSettings() {
+    if (typeof chrome === 'undefined' || !chrome.runtime) {
+        console.log('[Instagram Downloader] Chrome API not available');
+        return;
+    }
+
     chrome.runtime.sendMessage({ type: 'GET_SETTINGS' }, (settings) => {
+        if (chrome.runtime.lastError) {
+            console.log('[Instagram Downloader] Background script not ready');
+            return;
+        }
+
         if (settings) {
             if (document.getElementById('enableToggle')) {
                 document.getElementById('enableToggle').checked = settings.enabled !== false;
