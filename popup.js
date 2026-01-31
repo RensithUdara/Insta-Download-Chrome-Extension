@@ -272,10 +272,12 @@ function saveSettings() {
         quality: document.getElementById('qualitySelect')?.value ?? 'high'
     };
 
-    chrome.runtime.sendMessage({
-        type: 'SET_SETTINGS',
-        settings: settings
-    });
+    if (typeof chrome !== 'undefined' && chrome.runtime) {
+        chrome.runtime.sendMessage({
+            type: 'SET_SETTINGS',
+            settings: settings
+        });
+    }
 }
 
 // Load Settings
