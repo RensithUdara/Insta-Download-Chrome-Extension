@@ -3,7 +3,7 @@
     "name": "Instagram Downloader - Photos, Videos & Stories",
     "short_name": "Insta Download",
     "version": "1.1.0",
-    "description": "Download photos, videos, reels, stories, and highlights from Instagram with one click. Privacy-first, no tracking, 100% local processing.",
+    "description": "Download Instagram photos, videos, reels, stories with ease. Privacy-first, no tracking.",
     "author": "Rensith Udara",
     "homepage_url": "https://github.com/RensithUdara/insta-download",
     "permissions": [
