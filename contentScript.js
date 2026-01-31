@@ -288,4 +288,3 @@ chrome.runtime.onMessage.addListener((msg) => {
     }
 });
 
-console.log('[Instagram Downloader] Content script loaded');
