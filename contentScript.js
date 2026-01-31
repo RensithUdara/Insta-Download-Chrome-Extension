@@ -153,36 +153,71 @@ function getMediaUrls() {
     return urls;
 }
 
-    return urls;
+// Story/Highlight detector - intercept network requests
+function setupStoryDetection() {
+    // Intercept fetch for story video detection
+    const originalFetch = window.fetch;
+    window.fetch = async function(...args) {
+        const response = await originalFetch(...args);
+        
+        try {
+            const url = args[0];
+            if (typeof url === 'string' && response.ok) {
+                // Detect story/highlight URLs
+                if (url.includes('story') || url.includes('highlight') || url.includes('reel')) {
+                    if (url.includes('.mp4') || url.includes('video')) {
+                        storyUrls.add(url.split('?')[0]);
+                    }
+                }
+            }
+        } catch (e) {
+            // Silently handle errors
+        }
+        
+        return response;
+    };
 }
 
-// Intercept fetch for story detection
-const originalFetch = window.fetch;
-window.fetch = async function (...args) {
-    const response = await originalFetch(...args);
-
-    try {
-        const url = args[0];
-        if (typeof url === 'string') {
-            if (url.includes('.mp4') || url.includes('video') || url.includes('story')) {
-                mediaCache.set(url, response.clone());
-            }
-        }
-    } catch (e) {
-        // Silently handle errors
-    }
-
-    return response;
-};
+setupStoryDetection();
 
 // Listen for messages from popup or background
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type === 'GET_MEDIA') {
         const urls = getMediaUrls();
+        // Include story URLs
+        const allUrls = [...new Set([...urls, ...Array.from(storyUrls)])];
         sendResponse({
-            urls: urls,
+            urls: allUrls,
             timestamp: new Date().toISOString(),
-            pageUrl: window.location.href
+            pageUrl: window.location.href,
+            obfuscated: isObfuscated,
+            count: allUrls.length
+        });
+    }
+    
+    if (msg.type === 'TOGGLE_SELECT') {
+        selectMode = !selectMode;
+        selectedMedia.clear();
+        
+        if (selectMode) {
+            document.body.style.cursor = 'crosshair';
+            highlightSelectableMedia();
+        } else {
+            document.body.style.cursor = 'auto';
+            clearHighlights();
+        }
+        
+        sendResponse({ selectMode: selectMode });
+    }
+    
+    if (msg.type === 'GET_SELECTED') {
+        sendResponse({ urls: Array.from(selectedMedia), count: selectedMedia.size });
+    }
+    
+    if (msg.type === 'GET_STORY_URLS') {
+        sendResponse({ storyUrls: Array.from(storyUrls) });
+    }
+});
         });
     }
 
