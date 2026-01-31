@@ -1,19 +1,99 @@
-// Content Script: Detects media on Instagram pages
+// Content Script: Detects media on Instagram pages (Advanced)
 
 const mediaCache = new Map();
 let selectMode = false;
 let selectedMedia = new Set();
+const storyUrls = new Set();
+let isObfuscated = false;
+
+// Advanced obfuscation detection and bypass
+const ObfuscationBypass = {
+  // Pattern matching for obfuscated video/image URLs
+  patterns: [
+    /vimeo\.com/i,
+    /\/v\/[\w-]+\//,
+    /scontent.*fbcdn/i,
+    /instagram\.com.*\/media\//i,
+    /[a-z0-9]{15,}\.jpg/i,
+    /blob:/i
+  ],
+  
+  // Detect if DOM is heavily obfuscated
+  isObfuscated() {
+    const elements = document.querySelectorAll('img, video, picture, [role="img"]');
+    let obfuscatedCount = 0;
+    
+    elements.forEach(el => {
+      const src = el.src || el.getAttribute('src') || '';
+      const classStr = el.className || '';
+      const idStr = el.id || '';
+      
+      // Check for heavily minified/obfuscated attributes
+      if (/[a-z]{1,3}_[a-z0-9]{10,}/i.test(classStr + idStr)) {
+        obfuscatedCount++;
+      }
+    });
+    
+    return obfuscatedCount / Math.max(elements.length, 1) > 0.5;
+  },
+  
+  // Get all candidate URLs including hidden ones
+  getAllCandidateUrls() {
+    const urls = [];
+    const seen = new Set();
+    
+    // Check all attributes that might contain URLs
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+      // Check style backgrounds
+      const style = window.getComputedStyle(el);
+      const bgImage = style.backgroundImage;
+      if (bgImage && bgImage.includes('url')) {
+        const match = bgImage.match(/url\(['"]?([^'"()]+)['"]?\)/);
+        if (match) {
+          const url = match[1];
+          if (this.patterns.some(p => p.test(url))) {
+            if (!seen.has(url)) {
+              urls.push(url);
+              seen.add(url);
+            }
+          }
+        }
+      }
+      
+      // Check data attributes
+      for (let attr of el.attributes || []) {
+        if (attr.value && (attr.value.includes('.jpg') || attr.value.includes('.mp4') || attr.value.includes('.webm'))) {
+          const urls_from_attr = attr.value.match(/https?:\/\/[^\s"'<>]+/g);
+          if (urls_from_attr) {
+            urls_from_attr.forEach(url => {
+              if (!seen.has(url)) {
+                urls.push(url);
+                seen.add(url);
+              }
+            });
+          }
+        }
+      }
+    });
+    
+    return urls;
+  }
+};
 
 // Extract media URLs from current page
 function getMediaUrls() {
     const urls = [];
     const seen = new Set();
+    
+    // Detect obfuscation
+    isObfuscated = ObfuscationBypass.isObfuscated();
 
     // Collect from img tags (photos, thumbnails)
     document.querySelectorAll('img').forEach(img => {
         if (img.src && !img.src.includes('data:')) {
             const src = img.src.split('?')[0]; // Remove query params
-            if (src.includes('instagram') || src.includes('cdninstagram') || src.includes('fbcdn')) {
+            if (src.includes('instagram') || src.includes('cdninstagram') || src.includes('fbcdn') || src.includes('scontent')) {
                 if (!seen.has(src)) {
                     urls.push(src);
                     seen.add(src);
@@ -58,6 +138,20 @@ function getMediaUrls() {
             }
         });
     });
+    
+    // Handle obfuscated DOM
+    if (isObfuscated) {
+      const obfuscatedUrls = ObfuscationBypass.getAllCandidateUrls();
+      obfuscatedUrls.forEach(url => {
+        if (!seen.has(url)) {
+          urls.push(url);
+          seen.add(url);
+        }
+      });
+    }
+
+    return urls;
+}
 
     return urls;
 }
