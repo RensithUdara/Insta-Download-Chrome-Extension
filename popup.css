@@ -106,6 +106,16 @@ body {
         background: #262626;
         border-color: #363636;
     }
+
+    .shortcut {
+        color: var(--text-dark);
+    }
+
+    kbd {
+        background: #404040;
+        border-color: #505050;
+        color: var(--text-dark);
+    }
 }
 
 .container {
