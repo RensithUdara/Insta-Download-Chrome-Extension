@@ -100,7 +100,7 @@ async function detectMedia() {
             }
         });
     } catch (error) {
-        console.log('[Instagram Downloader] Detection error:', error);
+        // Error in detection, continue silently
     }
 }
 
@@ -143,7 +143,6 @@ async function downloadCurrentMedia() {
             }, 1500);
         });
     } catch (error) {
-        console.error('Error:', error);
         showStatus('❌ Error detecting media', 'error');
     }
 }
@@ -339,4 +338,3 @@ function updateSelectButtonState() {
     }
 }
 
-console.log('[Instagram Downloader] Popup loaded - Advanced version');
