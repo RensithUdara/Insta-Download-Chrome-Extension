@@ -8,7 +8,6 @@ let currentStoryCount = 0;
 
 // Initialize popup
 document.addEventListener('DOMContentLoaded', () => {
-    initializeSettings();
     setupEventListeners();
     loadSettings();
     detectMedia();
