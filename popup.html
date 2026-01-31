@@ -6,45 +6,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instagram Downloader</title>
     <link rel="stylesheet" href="popup.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1 class="title">
+            <div class="logo-section">
                 <span class="logo">📸</span>
-                Instagram Downloader
-            </h1>
-            <p class="subtitle">Download your favorite content</p>
+                <div class="header-text">
+                    <h1 class="title">Instagram Downloader</h1>
+                    <p class="subtitle">Photos • Videos • Stories</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Main Controls -->
-        <div class="section">
-            <button id="downloadBtn" class="btn btn-primary">
+        <!-- Main Action Buttons -->
+        <div class="section actions-section">
+            <button id="downloadBtn" class="btn btn-primary btn-large">
                 <span class="btn-icon">⬇️</span>
-                Download Media
+                <span class="btn-text">Download Media</span>
+                <span class="btn-badge" id="mediaBadge"></span>
             </button>
 
-            <button id="selectBtn" class="btn btn-secondary">
-                <span class="btn-icon">✓</span>
-                Select Mode
-            </button>
+            <div class="button-row">
+                <button id="selectBtn" class="btn btn-secondary">
+                    <span class="btn-icon">✓</span>
+                    Select Items
+                </button>
 
-            <button id="downloadZipBtn" class="btn btn-secondary">
-                <span class="btn-icon">📦</span>
-                Download as ZIP
-            </button>
+                <button id="downloadZipBtn" class="btn btn-secondary">
+                    <span class="btn-icon">📦</span>
+                    ZIP Batch
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Access -->
+        <div class="section quick-access">
+            <h3>Quick Access</h3>
+            <div class="access-buttons">
+                <button id="storyBtn" class="access-btn">
+                    <span>📖</span>
+                    <span>Stories</span>
+                </button>
+                <button id="reelsBtn" class="access-btn">
+                    <span>🎬</span>
+                    <span>Reels</span>
+                </button>
+                <button id="postsBtn" class="access-btn">
+                    <span>📷</span>
+                    <span>Posts</span>
+                </button>
+            </div>
         </div>
 
         <!-- Settings Section -->
-        <div class="section">
+        <div class="section settings-section">
+            <h3>⚙️ Settings</h3>
+
             <div class="setting-item">
                 <label class="switch">
                     <input type="checkbox" id="enableToggle" checked>
                     <span class="slider"></span>
                 </label>
-                <span class="setting-label">Extension Enabled</span>
+                <span class="setting-label">Extension Active</span>
             </div>
 
             <div class="setting-item">
@@ -57,41 +84,88 @@
 
             <div class="setting-item">
                 <label class="switch">
-                    <input type="checkbox" id="autoDownloadToggle">
+                    <input type="checkbox" id="autoZipToggle">
                     <span class="slider"></span>
                 </label>
-                <span class="setting-label">Auto-Download High Quality</span>
+                <span class="setting-label">Auto ZIP Batches</span>
+            </div>
+
+            <div class="setting-item">
+                <label class="setting-label">Quality</label>
+                <select id="qualitySelect" class="quality-select">
+                    <option value="high">🔥 High</option>
+                    <option value="medium">👍 Medium</option>
+                    <option value="low">📱 Low</option>
+                </select>
             </div>
         </div>
 
-        <!-- Quick Info -->
-        <div class="section info-section">
-            <h3>⌨️ Keyboard Shortcuts</h3>
-            <div class="shortcuts">
-                <div class="shortcut">
-                    <kbd>D</kbd>
-                    <span>Download current media</span>
-                </div>
-                <div class="shortcut">
-                    <kbd>S</kbd>
-                    <span>Toggle selection mode</span>
-                </div>
+        <!-- Media Info -->
+        <div id="mediaInfo" class="section info-section" style="display: none;">
+            <div class="info-item">
+                <span class="info-label">Media Found:</span>
+                <span class="info-value" id="mediaCount">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Stories:</span>
+                <span class="info-value" id="storyCount">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">DOM Status:</span>
+                <span class="info-value" id="obfuscationStatus">Normal</span>
             </div>
         </div>
 
         <!-- Features -->
         <div class="section features-section">
             <h3>✨ Features</h3>
-            <ul class="features-list">
-                <li>📸 Download Posts & Reels</li>
-                <li>📹 Videos in High Quality</li>
-                <li>📖 Stories & Highlights</li>
-                <li>📦 Batch Download as ZIP</li>
-                <li>🎯 Selection Mode</li>
-                <li>🌙 Dark Mode Support</li>
-                <li>🔒 100% Private & Local</li>
-                <li>⚡ Lightning Fast</li>
-            </ul>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <span class="feature-icon">📸</span>
+                    <span>Posts & Photos</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎬</span>
+                    <span>Reels & Videos</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📖</span>
+                    <span>Stories & Highlights</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📦</span>
+                    <span>ZIP Batch Download</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    <span>Selection Mode</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🌙</span>
+                    <span>Dark Mode</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🔒</span>
+                    <span>100% Private</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">⚡</span>
+                    <span>Super Fast</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Keyboard Shortcuts -->
+        <div class="section shortcuts-section">
+            <h3>⌨️ Keyboard Shortcuts</h3>
+            <div class="shortcut">
+                <kbd>D</kbd>
+                <span>Download media</span>
+            </div>
+            <div class="shortcut">
+                <kbd>S</kbd>
+                <span>Toggle selection</span>
+            </div>
         </div>
 
         <!-- Status -->
