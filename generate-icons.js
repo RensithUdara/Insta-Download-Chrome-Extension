@@ -7,27 +7,27 @@ const path = require('path');
 
 // Simple PNG generator - creates a gradient image
 function createSimplePNG(size) {
-  // Create a minimal PNG file with Instagram colors
-  // For production, use a tool like sharp or imagemin
-  
-  // PNG header + minimal gradient image data
-  const buffer = Buffer.alloc(size * size * 4 + 1000);
-  let offset = 0;
+    // Create a minimal PNG file with Instagram colors
+    // For production, use a tool like sharp or imagemin
 
-  // PNG signature
-  const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  signature.copy(buffer, offset);
-  offset += 8;
+    // PNG header + minimal gradient image data
+    const buffer = Buffer.alloc(size * size * 4 + 1000);
+    let offset = 0;
 
-  // This is a simplified representation
-  // For real icons, use imagemin-optipng or similar tools
-  
-  // Note: For proper PNG generation, use:
-  // npm install sharp
-  // then use sharp to create proper icons
+    // PNG signature
+    const signature = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+    signature.copy(buffer, offset);
+    offset += 8;
 
-  console.log(`Created placeholder for ${size}x${size} icon`);
-  return buffer.slice(0, offset);
+    // This is a simplified representation
+    // For real icons, use imagemin-optipng or similar tools
+
+    // Note: For proper PNG generation, use:
+    // npm install sharp
+    // then use sharp to create proper icons
+
+    console.log(`Created placeholder for ${size}x${size} icon`);
+    return buffer.slice(0, offset);
 }
 
 // Icon sizes needed
@@ -36,14 +36,14 @@ const iconsDir = path.join(__dirname, 'icons');
 
 // Create placeholder files (proper icons should be generated with image tools)
 sizes.forEach(size => {
-  const filename = `icon${size}.png`;
-  const filepath = path.join(iconsDir, filename);
-  
-  // Create placeholder (in production, generate real PNG with sharp)
-  console.log(`Note: Create ${filename} (${size}x${size}) using an image editor or tool`);
-  console.log(`  Suggestion: Use Figma, Photoshop, or online tool to create icon`);
-  console.log(`  Design: Camera emoji icon or Instagram-inspired design`);
-  console.log(`  Colors: Gradient from #E1306C (pink) to #833AB4 (purple)`);
+    const filename = `icon${size}.png`;
+    const filepath = path.join(iconsDir, filename);
+
+    // Create placeholder (in production, generate real PNG with sharp)
+    console.log(`Note: Create ${filename} (${size}x${size}) using an image editor or tool`);
+    console.log(`  Suggestion: Use Figma, Photoshop, or online tool to create icon`);
+    console.log(`  Design: Camera emoji icon or Instagram-inspired design`);
+    console.log(`  Colors: Gradient from #E1306C (pink) to #833AB4 (purple)`);
 });
 
 console.log('\n✅ Icon generation guide created');
