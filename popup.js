@@ -19,7 +19,7 @@ function setupEventListeners() {
     document.getElementById('downloadBtn').addEventListener('click', downloadCurrentMedia);
     document.getElementById('selectBtn').addEventListener('click', toggleSelectMode);
     document.getElementById('downloadZipBtn').addEventListener('click', downloadAsZip);
-    
+
     // Story/Reel/Post buttons
     if (document.getElementById('storyBtn')) {
         document.getElementById('storyBtn').addEventListener('click', () => filterByType('story'));
@@ -59,7 +59,7 @@ function setupEventListeners() {
 async function detectMedia() {
     try {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        
+
         if (!tab.url.includes('instagram.com')) {
             return;
         }
@@ -71,7 +71,7 @@ async function detectMedia() {
 
             if (response && response.urls) {
                 currentMediaCount = response.count || response.urls.length;
-                
+
                 // Update badge
                 if (document.getElementById('mediaBadge') && currentMediaCount > 0) {
                     document.getElementById('mediaBadge').textContent = currentMediaCount;
@@ -105,36 +105,36 @@ async function detectMedia() {
 async function downloadCurrentMedia() {
     try {
         showStatus('🔄 Scanning page...', 'info');
-        
+
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        
+
         if (!tab.url.includes('instagram.com')) {
             showStatus('⚠️ Please open Instagram first', 'error');
             return;
         }
-        
+
         chrome.tabs.sendMessage(tab.id, { type: 'GET_MEDIA' }, (response) => {
             if (chrome.runtime.lastError) {
                 showStatus('❌ Please refresh Instagram and try again', 'error');
                 return;
             }
-            
+
             if (!response || !response.urls || response.urls.length === 0) {
                 showStatus('❌ No downloadable content found', 'error');
                 return;
             }
-            
+
             const count = response.urls.length;
             const quality = document.getElementById('qualitySelect')?.value || 'high';
-            
+
             showStatus(`✅ Found ${count} item(s). Starting download...`, 'success');
-            
+
             chrome.runtime.sendMessage({
                 type: 'DOWNLOAD',
                 urls: response.urls,
                 quality: quality
             });
-            
+
             setTimeout(() => {
                 showStatus(`✅ ${count} item(s) queued! Check Downloads folder.`, 'success');
             }, 1500);
@@ -149,21 +149,21 @@ async function downloadCurrentMedia() {
 async function toggleSelectMode() {
     try {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        
+
         if (!tab.url.includes('instagram.com')) {
             showStatus('⚠️ Please open Instagram first', 'error');
             return;
         }
-        
+
         chrome.tabs.sendMessage(tab.id, { type: 'TOGGLE_SELECT' }, (response) => {
             if (chrome.runtime.lastError) {
                 showStatus('❌ Content not loaded', 'error');
                 return;
             }
-            
+
             isSelectMode = response.selectMode;
             updateSelectButtonState();
-            
+
             if (isSelectMode) {
                 showStatus('🎯 Selection ON - Click media to select (green = selected)', 'info');
             } else {
@@ -179,25 +179,25 @@ async function toggleSelectMode() {
 async function downloadAsZip() {
     try {
         showStatus('📦 Preparing ZIP...', 'info');
-        
+
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        
+
         if (!tab.url.includes('instagram.com')) {
             showStatus('⚠️ Please open Instagram first', 'error');
             return;
         }
-        
+
         chrome.tabs.sendMessage(tab.id, { type: 'GET_MEDIA' }, (response) => {
             if (!response || !response.urls || response.urls.length === 0) {
                 showStatus('❌ No media to ZIP', 'error');
                 return;
             }
-            
+
             const count = response.urls.length;
             const timestamp = new Date().toISOString().split('T')[0];
-            
+
             showStatus(`✅ Creating ZIP with ${count} item(s)...`, 'success');
-            
+
             chrome.runtime.sendMessage({
                 type: 'DOWNLOAD',
                 urls: response.urls,
@@ -214,17 +214,17 @@ async function downloadAsZip() {
 async function filterByType(type) {
     try {
         showStatus(`🔍 Finding ${type}s...`, 'info');
-        
+
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        
+
         chrome.tabs.sendMessage(tab.id, { type: 'GET_MEDIA' }, (response) => {
             if (!response || !response.urls) {
                 showStatus('❌ No content found', 'error');
                 return;
             }
-            
+
             let filtered = response.urls;
-            
+
             if (type === 'story') {
                 chrome.tabs.sendMessage(tab.id, { type: 'GET_STORY_URLS' }, (storyResponse) => {
                     if (storyResponse && storyResponse.storyUrls.length > 0) {
@@ -258,7 +258,7 @@ function showStatus(message, type = 'info') {
     const statusEl = document.getElementById('status');
     statusEl.textContent = message;
     statusEl.className = `status show ${type}`;
-    
+
     setTimeout(() => {
         statusEl.classList.remove('show');
     }, 5000);
@@ -272,7 +272,7 @@ function saveSettings() {
         autoZip: document.getElementById('autoZipToggle')?.checked ?? false,
         quality: document.getElementById('qualitySelect')?.value ?? 'high'
     };
-    
+
     chrome.runtime.sendMessage({
         type: 'SET_SETTINGS',
         settings: settings
@@ -295,7 +295,7 @@ function loadSettings() {
             if (document.getElementById('qualitySelect')) {
                 document.getElementById('qualitySelect').value = settings.quality || 'high';
             }
-            
+
             if (settings.darkMode) {
                 applyDarkMode(true);
             }
