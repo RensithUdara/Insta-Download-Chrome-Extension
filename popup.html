@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Downloader</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">
+                <span class="logo">📸</span>
+                Instagram Downloader
+            </h1>
+            <p class="subtitle">Download your favorite content</p>
+        </div>
+
+        <!-- Main Controls -->
+        <div class="section">
+            <button id="downloadBtn" class="btn btn-primary">
+                <span class="btn-icon">⬇️</span>
+                Download Media
+            </button>
+
+            <button id="selectBtn" class="btn btn-secondary">
+                <span class="btn-icon">✓</span>
+                Select Mode
+            </button>
+
+            <button id="downloadZipBtn" class="btn btn-secondary">
+                <span class="btn-icon">📦</span>
+                Download as ZIP
+            </button>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="section">
+            <div class="setting-item">
+                <label class="switch">
+                    <input type="checkbox" id="enableToggle" checked>
+                    <span class="slider"></span>
+                </label>
+                <span class="setting-label">Extension Enabled</span>
+            </div>
+
+            <div class="setting-item">
+                <label class="switch">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="setting-label">Dark Mode</span>
+            </div>
+
+            <div class="setting-item">
+                <label class="switch">
+                    <input type="checkbox" id="autoDownloadToggle">
+                    <span class="slider"></span>
+                </label>
+                <span class="setting-label">Auto-Download High Quality</span>
+            </div>
+        </div>
+
+        <!-- Quick Info -->
+        <div class="section info-section">
+            <h3>⌨️ Keyboard Shortcuts</h3>
+            <div class="shortcuts">
+                <div class="shortcut">
+                    <kbd>D</kbd>
+                    <span>Download current media</span>
+                </div>
+                <div class="shortcut">
+                    <kbd>S</kbd>
+                    <span>Toggle selection mode</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="section features-section">
+            <h3>✨ Features</h3>
+            <ul class="features-list">
+                <li>📸 Download Posts & Reels</li>
+                <li>📹 Videos in High Quality</li>
+                <li>📖 Stories & Highlights</li>
+                <li>📦 Batch Download as ZIP</li>
+                <li>🎯 Selection Mode</li>
+                <li>🌙 Dark Mode Support</li>
+                <li>🔒 100% Private & Local</li>
+                <li>⚡ Lightning Fast</li>
+            </ul>
+        </div>
+
+        <!-- Status -->
+        <div id="status" class="status"></div>
+
+        <!-- Footer Links -->
+        <div class="footer">
+            <a href="https://www.instagram.com" target="_blank" class="footer-link">
+                <span>📱 Open Instagram</span>
+            </a>
+            <a href="https://github.com" target="_blank" class="footer-link">
+                <span>⭐ GitHub Repo</span>
+            </a>
+        </div>
+
+        <!-- Privacy Notice -->
+        <div class="privacy-notice">
+            <p>🔒 <strong>Privacy First:</strong> All processing happens locally. No data is sent to any server. This
+                extension is open-source and free.</p>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
