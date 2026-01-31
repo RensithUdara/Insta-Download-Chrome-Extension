@@ -1,0 +1,69 @@
+ICON SETUP INSTRUCTIONS
+========================
+
+The extension needs icon files in the icons/ folder:
+
+Required Files:
+1. icons/icon16.png    (16x16 pixels)
+2. icons/icon48.png    (48x48 pixels)
+3. icons/icon128.png   (128x128 pixels)
+4. icons/logo.png      (Display logo in popup - suggested 32x32 or 64x64)
+
+Setup Steps:
+============
+
+Option 1: Using Online Tools (Recommended)
+-------------------------------------------
+1. Visit: https://www.icoconvert.com/
+2. Upload the provided INSTA DOWNLOAD logo image
+3. Generate versions at: 16x16, 48x48, 128x128
+4. Download each size and save to icons/ folder
+
+Option 2: Using Image Editor (Photoshop, GIMP)
+-----------------------------------------------
+1. Open the logo image in your image editor
+2. Resize to each required dimension:
+   - 16x16 (small)
+   - 48x48 (medium)
+   - 128x128 (large)
+3. Export as PNG to icons/ folder with correct names
+
+Option 3: Using Online Resizer
+-------------------------------
+1. Go to: https://www.pixlr.com/resize-image/
+2. Upload the logo
+3. Set dimensions to 16x16, download and save
+4. Repeat for 48x48 and 128x128
+
+File Placement:
+===============
+After preparing the icons, place them here:
+e:\Insta-Download\icons\
+  ├── icon16.png
+  ├── icon48.png
+  ├── icon128.png
+  └── logo.png (for popup display)
+
+The manifest.json already references these files:
+- icons/icon16.png  (browser toolbar)
+- icons/icon48.png  (extension details)
+- icons/icon128.png (installation dialog)
+
+The popup.html now displays icons/logo.png in the header.
+
+Verification:
+=============
+After placing the icon files:
+1. Go to chrome://extensions/
+2. Enable "Developer mode" (top right)
+3. Click "Load unpacked"
+4. Select the e:\Insta-Download\ folder
+5. The extension should appear with your icon
+6. Open the popup to see the logo in the header
+
+Notes:
+======
+- Keep icon files as PNG format
+- Ensure dimensions are exactly as specified
+- Icons should have transparent background (PNG with alpha)
+- The gradient Instagram-style design works best for all sizes
