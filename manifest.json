@@ -1,19 +1,21 @@
 {
     "manifest_version": 3,
-    "name": "Instagram Downloader",
-    "version": "1.0.0",
-    "description": "Download photos, videos, reels, stories, and highlights from Instagram with one click",
+    "name": "Instagram Downloader - Photos, Videos & Stories",
+    "version": "1.1.0",
+    "description": "Download photos, videos, reels, stories, and highlights from Instagram with one click. Privacy-first, no tracking, 100% local processing.",
     "permissions": [
         "downloads",
         "activeTab",
         "scripting",
         "webRequest",
-        "storage"
+        "storage",
+        "tabs"
     ],
     "host_permissions": [
         "https://www.instagram.com/*",
         "https://*.cdninstagram.com/*",
-        "https://*.fbcdn.net/*"
+        "https://*.fbcdn.net/*",
+        "https://*.instagram.com/*"
     ],
     "background": {
         "service_worker": "background.js"
