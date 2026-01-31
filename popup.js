@@ -57,6 +57,10 @@ function setupEventListeners() {
 // Auto-detect media on page load
 async function detectMedia() {
     try {
+        if (typeof chrome === 'undefined' || !chrome.tabs) {
+            return;
+        }
+
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
         if (!tab.url.includes('instagram.com')) {
