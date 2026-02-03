@@ -9,10 +9,8 @@
     "permissions": [
         "downloads",
         "activeTab",
-        "scripting",
         "storage",
-        "tabs",
-        "webNavigation"
+        "tabs"
     ],
     "host_permissions": [
         "https://www.instagram.com/*",
@@ -58,15 +56,15 @@
     "commands": {
         "download-media": {
             "suggested_key": {
-                "default": "D",
-                "mac": "Command+D"
+                "default": "Ctrl+Shift+D",
+                "mac": "Command+Shift+D"
             },
             "description": "Download current media"
         },
         "toggle-select": {
             "suggested_key": {
-                "default": "S",
-                "mac": "Command+S"
+                "default": "Ctrl+Shift+S",
+                "mac": "Command+Shift+S"
             },
             "description": "Toggle selection mode"
         }
