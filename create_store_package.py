@@ -4,7 +4,6 @@ Chrome Web Store Package Creator
 Creates a .zip file ready for Chrome Web Store submission
 """
 
-import utils.session
 import os
 import zipfile
 import argparse
